@@ -1,9 +1,82 @@
 
 import { useEffect, useState } from 'react';
-import HeroSection from '../components/HeroSection';
-import BentoGrid from '../components/BentoGrid';
-import EnhancedCursor from '../components/EnhancedCursor';
-import { Music, Heart, Sparkles, Github, Twitter } from 'lucide-react';
+import Header from '../components/Header';
+import AlbumCard from '../components/AlbumCard';
+import CustomCursor from '../components/CustomCursor';
+import { Music, Heart, Sparkles } from 'lucide-react';
+
+const albums = [
+  {
+    title: "Immunity",
+    artist: "Clairo",
+    coverImage: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    genres: ["bedroom pop", "indie", "dreamy"],
+    feeling: "soft mornings and golden hour feelings, like floating through a pastel dream"
+  },
+  {
+    title: "Melodrama",
+    artist: "Lorde",
+    coverImage: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&h=400&fit=crop",
+    genres: ["alt pop", "electro", "moody"],
+    feeling: "teenage emotions turned into pure art, every track hits different"
+  },
+  {
+    title: "Punisher",
+    artist: "Phoebe Bridgers",
+    coverImage: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    genres: ["indie folk", "sad girl", "ethereal"],
+    feeling: "vulnerability wrapped in haunting melodies, absolutely devastating"
+  },
+  {
+    title: "Flower Boy",
+    artist: "Tyler, The Creator",
+    coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+    genres: ["hip hop", "experimental", "colorful"],
+    feeling: "a sunny day in musical form, creative genius meets pure joy"
+  },
+  {
+    title: "Ctrl",
+    artist: "SZA",
+    coverImage: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    genres: ["r&b", "alternative", "honest"],
+    feeling: "raw emotions and silky vocals, the soundtrack to growing up"
+  },
+  {
+    title: "Norman F*cking Rockwell!",
+    artist: "Lana Del Rey",
+    coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+    genres: ["dream pop", "americana", "cinematic"],
+    feeling: "vintage glamour meets modern melancholy, utterly mesmerizing"
+  },
+  {
+    title: "Blonde",
+    artist: "Frank Ocean",
+    coverImage: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    genres: ["alt r&b", "experimental", "emotional"],
+    feeling: "a masterpiece of vulnerability, every listen reveals new layers"
+  },
+  {
+    title: "When We All Fall Asleep",
+    artist: "Billie Eilish",
+    coverImage: "https://images.unsplash.com/photo-1514320291840-2e0a9bf2a9ae?w=400&h=400&fit=crop",
+    genres: ["alt pop", "dark", "innovative"],
+    feeling: "whispered secrets and bass drops, redefining what pop can be"
+  },
+  {
+    title: "MAGDALENE",
+    artist: "FKA twigs",
+    coverImage: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=400&fit=crop",
+    genres: ["art pop", "experimental", "ethereal"],
+    feeling: "otherworldly beauty, like listening to emotions in their purest form"
+  },
+  {
+    title: "Crumb",
+    artist: "Locket",
+    coverImage: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop",
+    genres: ["psychedelic", "indie", "dreamy"],
+    feeling: "floating through space with the softest textures and warmest melodies"
+  }
+];
 
 const Index = () => {
   const [mounted, setMounted] = useState(false);
@@ -15,77 +88,52 @@ const Index = () => {
   if (!mounted) return null;
 
   return (
-    <div className="min-h-screen bg-background text-foreground relative">
-      <EnhancedCursor />
+    <div className="min-h-screen relative overflow-hidden">
+      <CustomCursor />
       
-      {/* Navigation */}
-      <nav className="fixed top-0 left-0 right-0 z-50 glass-effect border-b border-purple-500/20">
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="font-black text-xl text-gradient">
-              violetpicks
-            </div>
-            
-            <div className="hidden md:flex items-center gap-8">
-              <a href="#collection" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
-                Collection
-              </a>
-              <a href="#about" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
-                About
-              </a>
-              <a href="#contact" className="text-gray-300 hover:text-purple-400 transition-colors font-medium">
-                Contact
-              </a>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <Github className="w-5 h-5 text-gray-400 hover:text-purple-400 cursor-pointer transition-colors" />
-              <Twitter className="w-5 h-5 text-gray-400 hover:text-purple-400 cursor-pointer transition-colors" />
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Hero Section */}
-      <HeroSection />
-
-      {/* Bento Grid */}
-      <div id="collection">
-        <BentoGrid />
+      {/* Background decorative elements */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute top-20 left-10 w-32 h-32 bg-violet-200/20 rounded-full blur-xl animate-float" />
+        <div className="absolute top-40 right-20 w-24 h-24 bg-rose-200/20 rounded-full blur-xl animate-float animate-delay-200" />
+        <div className="absolute bottom-40 left-1/4 w-40 h-40 bg-sky-200/20 rounded-full blur-xl animate-float animate-delay-400" />
+        <div className="absolute bottom-20 right-1/3 w-28 h-28 bg-emerald-200/20 rounded-full blur-xl animate-float animate-delay-300" />
       </div>
 
-      {/* Footer */}
-      <footer className="relative py-20 px-6">
-        <div className="max-w-4xl mx-auto text-center space-y-8">
-          {/* Decorative line */}
-          <div className="h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
-          
-          {/* Icons */}
-          <div className="flex justify-center items-center space-x-6 text-purple-400">
-            <Music className="w-6 h-6 animate-bounce" />
-            <Heart className="w-5 h-5 animate-pulse" />
-            <Sparkles className="w-6 h-6 animate-bounce" style={{ animationDelay: '0.5s' }} />
+      <div className="relative z-10 container mx-auto px-6 py-8">
+        <Header />
+        
+        <main className="mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 max-w-7xl mx-auto">
+            {albums.map((album, index) => (
+              <AlbumCard
+                key={`${album.artist}-${album.title}`}
+                {...album}
+                delay={index * 100}
+              />
+            ))}
           </div>
-          
-          {/* Main footer text */}
-          <div className="space-y-4">
-            <h3 className="text-2xl md:text-3xl font-bold text-gradient">
-              violetpicks
-            </h3>
-            <p className="text-gray-400 text-lg">
-              a love letter to the albums I adore ✨
+        </main>
+
+        <footer className="mt-20 pb-8">
+          <div className="text-center space-y-6">
+            <div className="h-px bg-gradient-to-r from-transparent via-violet-300 to-transparent mx-auto max-w-md" />
+            
+            <div className="flex justify-center items-center space-x-4 text-violet-400">
+              <Music className="w-5 h-5 animate-float" />
+              <Heart className="w-4 h-4 animate-float animate-delay-200" />
+              <Sparkles className="w-5 h-5 animate-float animate-delay-400" />
+            </div>
+            
+            <p className="text-violet-600 font-dm text-sm">
+              violetpicks — a love letter to the albums I adore ✨
+            </p>
+            
+            <p className="text-violet-400 font-dm text-xs">
+              crafted with 💜 for the music that moves us
             </p>
           </div>
-          
-          {/* Sub text */}
-          <p className="text-gray-500 text-sm">
-            crafted with 💜 for the music that moves us
-          </p>
-          
-          {/* Bottom gradient */}
-          <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full"></div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 };
