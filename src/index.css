@@ -126,9 +126,78 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  .album-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.15);
+  /* Accordion Grid System */
+  .album-accordion {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 
+      var(--col-1, 1fr) 
+      var(--col-2, 1fr) 
+      var(--col-3, 1fr) 
+      var(--col-4, 1fr) 
+      var(--col-5, 1fr);
+    grid-template-rows: 60vh;
+    gap: 1rem;
+    border: none;
+    
+    @media (prefers-reduced-motion: no-preference) {
+      transition: grid-template-columns 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    &:has(label:nth-child(1) input:checked) {
+      --col-1: 3fr;
+      --col-2: 1fr;
+      --col-3: 1fr;
+      --col-4: 1fr;
+      --col-5: 1fr;
+    }
+    &:has(label:nth-child(2) input:checked) {
+      --col-1: 1fr;
+      --col-2: 3fr;
+      --col-3: 1fr;
+      --col-4: 1fr;
+      --col-5: 1fr;
+    }
+    &:has(label:nth-child(3) input:checked) {
+      --col-1: 1fr;
+      --col-2: 1fr;
+      --col-3: 3fr;
+      --col-4: 1fr;
+      --col-5: 1fr;
+    }
+    &:has(label:nth-child(4) input:checked) {
+      --col-1: 1fr;
+      --col-2: 1fr;
+      --col-3: 1fr;
+      --col-4: 3fr;
+      --col-5: 1fr;
+    }
+    &:has(label:nth-child(5) input:checked) {
+      --col-1: 1fr;
+      --col-2: 1fr;
+      --col-3: 1fr;
+      --col-4: 1fr;
+      --col-5: 3fr;
+    }
+  }
+
+  .album-card {
+    position: relative;
+    overflow: hidden;
+    
+    &:focus-within {
+      outline: 2px solid var(--primary);
+      outline-offset: 4px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .album-accordion {
+      grid-auto-flow: row;
+      grid-template-columns: 1fr;
+      grid-template-rows: repeat(5, 40vh);
+      gap: 1rem;
+    }
   }
 }
 
