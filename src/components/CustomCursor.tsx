@@ -2,13 +2,22 @@
 import { useEffect, useState } from 'react';
 
 const CustomCursor = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [trail, setTrail] = useState<{ x: number; y: number; id: number }[]>([]);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let animationId: number;
+    let trailId = 0;
+
     const updateCursor = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
       setIsVisible(true);
+      
+      const newPoint = { x: e.clientX, y: e.clientY, id: trailId++ };
+      
+      setTrail(prevTrail => {
+        const newTrail = [newPoint, ...prevTrail.slice(0, 8)]; // Keep last 9 points
+        return newTrail;
+      });
     };
 
     const hideCursor = () => setIsVisible(false);
@@ -19,21 +28,35 @@ const CustomCursor = () => {
     return () => {
       document.removeEventListener('mousemove', updateCursor);
       document.removeEventListener('mouseleave', hideCursor);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
     };
   }, []);
 
   return (
-    <div
-      className={`fixed pointer-events-none z-50 transition-opacity duration-300 ${
-        isVisible ? 'opacity-100' : 'opacity-0'
-      }`}
-      style={{
-        left: position.x - 10,
-        top: position.y - 10,
-      }}
-    >
-      <div className="w-5 h-5 bg-gradient-to-r from-violet-400 to-rose-400 rounded-full animate-blob opacity-80" />
-      <div className="w-3 h-3 bg-gradient-to-r from-sky-400 to-emerald-400 rounded-full absolute top-1 left-1 animate-float" />
+    <div className={`fixed pointer-events-none z-50 transition-opacity duration-300 ${
+      isVisible ? 'opacity-100' : 'opacity-0'
+    }`}>
+      {trail.map((point, index) => {
+        const opacity = (trail.length - index) / trail.length;
+        const size = 8 - (index * 0.8);
+        
+        return (
+          <div
+            key={point.id}
+            className="absolute rounded-full bg-[#FFC1CC]"
+            style={{
+              left: point.x - size / 2,
+              top: point.y - size / 2,
+              width: size,
+              height: size,
+              opacity: opacity * 0.8,
+              transition: 'all 0.1s ease-out',
+            }}
+          />
+        );
+      })}
     </div>
   );
 };

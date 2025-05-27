@@ -9,11 +9,12 @@ interface AlbumCardProps {
   feeling: string;
   description: string;
   index: number;
+  albumNumber: number;
   isSelected: boolean;
   onSelect: () => void;
 }
 
-const AlbumCard = ({ title, artist, coverImage, genres, feeling, description, index, isSelected, onSelect }: AlbumCardProps) => {
+const AlbumCard = ({ title, artist, coverImage, genres, feeling, description, index, albumNumber, isSelected, onSelect }: AlbumCardProps) => {
   const [imageLoaded, setImageLoaded] = useState(false);
 
   return (
@@ -22,63 +23,43 @@ const AlbumCard = ({ title, artist, coverImage, genres, feeling, description, in
         isSelected ? 'selected' : ''
       }`}
       style={{ 
-        backgroundImage: `url(${coverImage})`,
+        backgroundImage: isSelected ? `url(${coverImage})` : 'none',
         backgroundPosition: 'center',
-        backgroundSize: 'cover'
+        backgroundSize: 'cover',
+        backgroundColor: isSelected ? 'transparent' : '#2C2C2C'
       }}
     >
       <input 
         type="radio" 
-        name="album" 
+        name={`album-row-${Math.floor(index / 5)}`}
         className="opacity-0 absolute inset-0" 
         checked={isSelected}
         onChange={onSelect}
       />
       
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      {isSelected && (
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+      )}
       
-      <div className="relative z-10 h-full flex flex-col justify-end p-6">
-        <div className="space-y-3">
-          <div>
-            <h3 className="font-outfit font-bold text-xl text-white">
-              {title}
-            </h3>
-            <p className="text-white/80 font-medium">
-              {artist}
-            </p>
+      <div className="relative z-10 h-full flex flex-col justify-center items-center p-6">
+        {!isSelected ? (
+          <div className="text-center">
+            <h2 className="font-outfit font-black text-4xl text-[#FFC1CC]">
+              #{albumNumber}
+            </h2>
           </div>
-          
-          {isSelected && (
-            <div className="space-y-4 animate-fade-in">
-              <div className="flex flex-wrap gap-2">
-                {genres.map((genre, genreIndex) => (
-                  <span
-                    key={genre}
-                    className={`px-3 py-1 text-xs font-medium rounded-full transition-all duration-300 ${
-                      genreIndex % 3 === 0 
-                        ? 'bg-violet-500/30 text-violet-200'
-                        : genreIndex % 3 === 1
-                        ? 'bg-rose-500/30 text-rose-200'
-                        : 'bg-sky-500/30 text-sky-200'
-                    }`}
-                  >
-                    #{genre}
-                  </span>
-                ))}
-              </div>
-              
-              <p className="text-sm text-white/90 italic leading-relaxed font-outfit">
-                "{feeling}"
+        ) : (
+          <div className="space-y-3 text-center">
+            <div>
+              <h3 className="font-outfit font-bold text-xl text-white">
+                {title}
+              </h3>
+              <p className="text-white/80 font-medium">
+                {artist}
               </p>
-              
-              <div className="border-t border-white/20 pt-4">
-                <p className="text-sm text-white/80 leading-relaxed font-outfit">
-                  {description}
-                </p>
-              </div>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </label>
   );
